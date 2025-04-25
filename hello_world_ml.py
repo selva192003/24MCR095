@@ -2,6 +2,7 @@ from pandas import read_csv
 from matplotlib import pyplot
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
 import joblib
 
 # Step 1: Load dataset
@@ -24,8 +25,12 @@ pyplot.close()
 
 # Step 5: Convert to NumPy array and extract features/labels
 array = data.values
-X = array[:, 1:5]  # Features: Sepal/Petal measurements
-Y = array[:, 5]    # Target: Species
+X = array[:, :-1]  # Features: All columns except the last one
+Y = array[:, -1]   # Target: The last column (species)
+
+# Encode string labels to numeric values
+label_encoder = LabelEncoder()
+Y = label_encoder.fit_transform(Y)
 
 # Step 6: Split data into training (67%) and testing (33%)
 test_size = 0.33
